@@ -24,7 +24,7 @@ def cache_and_track(url: str) -> Callable:
             cache_key = f"cache:{url}"
             cached_result = redis_client.get(cache_key)
             if cached_result:
-                return cached_result.decode('utf-8')
+                return cached_result.decode("utf-8")
 
             # If not cached, call the function and cache the result
             result = func(*args, **kwargs)
@@ -34,15 +34,11 @@ def cache_and_track(url: str) -> Callable:
     return decorator
 
 
+@cache_and_track("http://google.com")
 def get_page(url: str) -> str:
     """Fetch the HTML content of a URL and cache it with a 10-second expiration."""
-    @cache_and_track(url)
-    def fetch_content(url: str) -> str:
-        """Fetch the HTML content of the URL."""
-        response = requests.get(url)
-        return response.text
-
-    return fetch_content(url)
+    response = requests.get(url)
+    return response.text
 
 
 # Example usage and testing
@@ -66,3 +62,4 @@ if __name__ == "__main__":
     time.sleep(10)
     cached_result = redis_client.get(cache_key)
     print(f"Cached result after 10 seconds: {cached_result is not None}")
+
