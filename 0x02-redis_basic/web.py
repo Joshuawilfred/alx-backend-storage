@@ -36,7 +36,7 @@ def cache_and_track(url: str) -> Callable:
 
 @cache_and_track("http://google.com")
 def get_page(url: str) -> str:
-    """Fetch the HTML content of a URL and cache it with a 10-second expiration."""
+    """Fetch the HTML content of a URL"""
     response = requests.get(url)
     return response.text
 
@@ -62,4 +62,3 @@ if __name__ == "__main__":
     time.sleep(10)
     cached_result = redis_client.get(cache_key)
     print(f"Cached result after 10 seconds: {cached_result is not None}")
-
